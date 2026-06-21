@@ -2,216 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="/portfolio/assets/cattap-03cfbd1b.gif" />
-    <script src="https://kit.fontawesome.com/69e14b7ae1.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/space-marine" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/gif" href="/portfolio/assets/cattap-C9mEMFQj.gif" />
+    <link href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.cdnfonts.com/css/space-marine" rel="stylesheet" />
+
     <title>Cats1337</title>
-    <meta name="keywords" content="Cats1337, developer, portfolio, projects, contact" />
-    <meta name="author" content="Cats1337" />
-    <meta name="description" content="Cats1337 — developer portfolio, projects, and contact." />
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LP3HSSWMDK"></script>
     <script>
-      (function () {
-        const SITE_NAME = "Cats1337";
-
-        function titleCase(s) {
-          return s.replace(/\b([A-Za-z0-9])/g, c => c.toUpperCase());
-        }
-
-        function slugToTitle(slug) {
-          const decoded = decodeURIComponent(slug);
-          return titleCase(
-            decoded
-              .replace(/\.[a-z0-9]+$/i, "") // drop .html, .htm, etc
-              .replace(/[-_]+/g, " ")       // - and _ to spaces
-              .replace(/\s+/g, " ")         // collapse spaces
-              .trim()
-          );
-        }
-
-        function collectSegments() {
-          // Prefer hash-based router if present (#/about/me)
-          if (location.hash.startsWith("#/")) {
-            return location.hash.slice(2).split("/");
-          }
-          return location.pathname.split("/");
-        }
-
-        function buildTitle() {
-          const segs = collectSegments()
-            .filter(Boolean)                               // remove empty
-            .filter(s => !/^index(\.[a-z0-9]+)?$/i.test(s))// drop index, index.html
-            .map(slugToTitle)
-            .filter(Boolean);
-
-          return segs.length ? [SITE_NAME, ...segs].join(" • ") : SITE_NAME;
-        }
-
-        function setOrCreateMeta(nameOrProp, value) {
-          let el = document.head.querySelector(`meta[name="${nameOrProp}"],meta[property="${nameOrProp}"]`);
-          if (!el) {
-            el = document.createElement("meta");
-            if (nameOrProp.includes(":")) el.setAttribute("property", nameOrProp);
-            else el.setAttribute("name", nameOrProp);
-            document.head.appendChild(el);
-          }
-          el.setAttribute("content", value);
-        }
-
-        function applyTitle() {
-          const t = buildTitle();
-          document.title = t;
-          setOrCreateMeta("title", t);
-          setOrCreateMeta("og:title", t);
-          setOrCreateMeta("twitter:title", t);
-        }
-
-        // Initial + routers
-        document.addEventListener("DOMContentLoaded", applyTitle);
-        window.addEventListener("hashchange", applyTitle);
-        window.addEventListener("popstate", applyTitle);
-        // Catch pushState/replaceState in SPAs
-        ["pushState","replaceState"].forEach(method => {
-          const orig = history[method];
-          if (typeof orig === "function") {
-            history[method] = function () {
-              const ret = orig.apply(this, arguments);
-              setTimeout(applyTitle, 0);
-              return ret;
-            };
-          }
-        });
-      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-LP3HSSWMDK");
     </script>
-
-
-
-
-    <!-- Optional: faster GA connections -->
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-
-    <!-- GA4 bootstrap: DNT + localhost guard + SPA config -->
-    <script>
-      (function () {
-        const MEASUREMENT_ID = 'G-LP3HSSWMDK';
-
-        // Respect Do Not Track
-        const dnt =
-          navigator.doNotTrack == '1' ||
-          window.doNotTrack == '1' ||
-          navigator.msDoNotTrack == '1';
-        if (dnt) {
-          console.warn('GA disabled due to Do Not Track');
-          window['ga-disable-' + MEASUREMENT_ID] = true;
-          return;
-        }
-
-        // Skip on localhost (optional)
-        const isLocalhost = ['localhost', '127.0.0.1'].includes(location.hostname);
-        if (isLocalhost) {
-          console.info('GA not loaded on localhost');
-          return;
-        }
-
-        // DataLayer + stub
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){ dataLayer.push(arguments); }
-        window.gtag = gtag;
-
-        // Load gtag.js
-        const s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + MEASUREMENT_ID;
-        document.head.appendChild(s);
-
-        gtag('js', new Date());
-
-        // SPA: disable auto page_view, we’ll send manually on route changes
-        gtag('config', MEASUREMENT_ID, {
-          send_page_view: false,
-          transport_type: 'beacon'
-        });
-      })();
-    </script>
-
-    <!-- Lightweight trackers (defer so they don’t block render) -->
-    <script defer>
-      (function ready(fn){
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
-        else fn();
-      })(function initTrackers(){
-        // Outbound links
-        (function trackOutbound(){
-          function isOutbound(a){ try { return a.hostname && a.hostname !== location.hostname; } catch { return false; } }
-          function sendAndMaybeFollow(a, e){
-            const href = a.href;
-            // Don’t hijack new-tab / modifier clicks
-            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-            e.preventDefault();
-            const follow = () => { location.href = href; };
-            if (typeof gtag === 'function') {
-              gtag('event', 'click_outbound', {
-                link_url: href,
-                link_domain: a.hostname || '',
-                link_text: (a.textContent || '').trim().slice(0,100),
-                transport_type: 'beacon',
-                event_callback: follow
-              });
-              setTimeout(follow, 800);
-            } else {
-              follow();
-            }
-          }
-          document.addEventListener('click', function (e) {
-            let el = e.target;
-            while (el && el !== document) {
-              if (el.tagName === 'A' && el.href && isOutbound(el)) {
-                sendAndMaybeFollow(el, e);
-                return;
-              }
-              el = el.parentElement;
-            }
-          }, true);
-        })();
-
-        // Scroll depth (25/50/75/100)
-        (function trackScrollDepth(){
-          const fired = {25:false,50:false,75:false,100:false};
-          const root = document.scrollingElement || document.documentElement;
-          const opts = { passive:true };
-          function percentSeen(){
-            const y = window.pageYOffset || root.scrollTop || 0;
-            const doc = Math.max(root.scrollHeight, root.offsetHeight, root.clientHeight);
-            const win = window.innerHeight || root.clientHeight || 0;
-            return Math.max(0, Math.min(100, Math.round(((y + win) / doc) * 100)));
-          }
-          function onScroll(){
-            const p = percentSeen();
-            [25,50,75,100].forEach(th=>{
-              if (!fired[th] && p >= th) {
-                fired[th] = true;
-                if (typeof gtag === 'function') {
-                  gtag('event', 'scroll_depth', { percent_scrolled: th, page_location: location.href });
-                }
-              }
-            });
-            if (fired[100]) window.removeEventListener('scroll', onScroll, opts);
-          }
-          window.addEventListener('scroll', onScroll, opts);
-          onScroll();
-        })();
-      });
-    </script>
-    <script type="module" crossorigin src="/portfolio/assets/index-589aa544.js"></script>
-    <link rel="stylesheet" href="/portfolio/assets/index-2a3e5cff.css">
+    <script type="module" crossorigin src="/portfolio/assets/index-3me5CJ49.js"></script>
+    <link rel="stylesheet" crossorigin href="/portfolio/assets/index-DaxcaZn0.css">
   </head>
 
   <body>
-    <div id="root"></div>
-    
-    <script src="https://cdn.rawgit.com/progers/pathseg/master/pathseg.js"></script>
+    <div id="root"></div>
   </body>
 </html>
